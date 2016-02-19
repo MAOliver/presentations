@@ -1,0 +1,11 @@
+blockdiag {
+  ServerApp -> WebAPI1 [label="APIKey"]
+
+  Client [shape="actor"]
+
+  Client -> NativeApp [label="Forms"]
+  Client -> WebApp1 [label="Windows"]
+
+  WebApp1 -> WebAPI1 [label="Basic"]
+  NativeApp -> WebAPI1 [label="APIKey"]
+}

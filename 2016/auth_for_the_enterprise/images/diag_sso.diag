@@ -1,0 +1,13 @@
+blockdiag {
+
+  TokenService [shape="roundedbox"]
+
+  Client [shape="actor"]
+
+  Client -> TokenService [label="un/pw"]
+  ServerApp <-> TokenService [label="oauth2"]
+  NativeApp <-> TokenService [label="oauth2"]
+  WebApp1 <-> TokenService [label="oauth2"]
+  WebAPI1 <-> TokenService [label="oauth2"]
+
+}

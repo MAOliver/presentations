@@ -1,0 +1,26 @@
+Which flow to use?
+
+That is probably the most common question we get – and the answer is of course: it depends!
+
+Machine to Machine Communication
+This one is easy – since there is no human directly involved, client credentials are used to request tokens.
+
+Browser-based Applications
+This might be a JavaScript-based application or a “traditional” server-rendered web application. For those scenarios, you typically want to use the implicit flow (OpenID Connect / OAuth 2.0).
+
+A side effect of the implicit flow is, that all tokens (identity and access tokens) are delivered through the browser front-channel. If you want to use the access token purely on the server side, this would result in an unnecessary exposure of the token to the client. In that case I would prefer the authorization code flow – or hybrid flow.
+
+Native Applications
+Strictly speaking, a native application has very similar security properties compared to a JavaScript application. Still they are generally considered a bit more easy to secure because you often have stronger platform support for protecting data and isolation.
+
+That’s the reason why the current consensus is, that an authorization code based flow gives you “a bit more” security than implicit. The much more important reason IMO is, that there are a couple of (upcoming) protocols that are optimized for native clients, and they use code exchange and the token endpoint as a foundation – e.g. PKCE, Proof of Possession and AC/DC.
+
+Remark 1: With native applications I mean applications that have access to platform-native APIs like data protection or maybe the system browser. Cordova applications are e.g. written in JavaScript, but I would not consider them to be a “browser-based application”.
+
+Remark 2: For code based flows, you need to embed the client secret in the client application. Of course you can’t treat that as a secret anymore – no matter how good you protect it, a motivated attacker will be able to reverse engineer it. It is still a bit better than no secret at all. Specs like PKCE make it a bit better as well.
+
+Remark 3: I often hear the argument that the client application does not care who the user is, it just needs an access token – thus we rather do OAuth 2.0 than OpenID Connect. While this might be strictly speaking true – OIDC is the superior protocol as it includes a couple of extra security features like nonces for replay protection or c_hash and at_hash to link the (verifiable) identity token to the (unverifiable) access token.
+
+Remark 4: As an extension to remark 3 – always use OpenID Connect – and not OAuth 2.0 on its own. There should be client libraries for every platform of interest by now. ASP.NET has middleware, we have a library for JavaScript. Other platforms should be fine as as well.
+
+Remark 5: Whenever you think about using authorization code flow – rather use hybrid flow. This gives you a verifiable token first before you make additional roundtrips (another extensions of remark 3 and 4).
